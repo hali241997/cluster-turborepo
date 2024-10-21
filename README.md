@@ -1,81 +1,37 @@
-# Turborepo starter
+# Cluster Turborepo Project
 
-This is an official starter Turborepo.
+This is the Cluster Exercise built using [Turborepo](https://turbo.build/repo/docs)
 
-## Using this example
-
-Run the following command:
-
-```sh
-npx create-turbo@latest
-```
+## Installation
+1. In the root directory, run this command: `yarn install`. This will install all the package with the dependencies.
+2. Create `.env` files in the `apps/cluster-frontend` and `apps/cluster-backend` directory. Please check your email for the respective env files.
+3. The backend project uses [postgres]((https://www.postgresql.org/). Be sure to install `postgres` on your system. If you want to use some other database, please change the `apps/cluster-backend/config/database.ts` file accordingly.
+4. Navigate to `apps/cluster-backend` to run the following command to execute the migrations: `node ace migration:run`.
+5. At the root of the projet, execute this command to run your project: `yarn dev`. This will start both projects in seperate terminals. Your backend server will run on [http://localhost:3333](http://localhost:3333) and your frontend server will run on [http://localhost:3000](http://localhost:3000).
 
 ## What's inside?
 
-This Turborepo includes the following packages/apps:
+The backend project contains a `generateDummyData.js` that generate a json file in `data/dummy-data.json` which will have dummy data for the cluster. There's no harm in executing this file but you do not need to. The `data/dummy-data.json` has already been provided.
 
-### Apps and Packages
+**I assumed there will always be one policy from the information provided in the email. Hence I made the controllers accordingly.**
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+## Test
+You can run the tests by executing the following command in the root of the project: `yarn test`.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+## Backend Details
+The `cluster-backend` has 3 routes:
+- GET `/api/getTimeSeries`: This will get the data for the cluster from the `data/dummy-data.json`.
+- GET `/api/getPolicy`: This will get the policy stored in the database. If no policy is stored, it will return `{}`.
+- PUT `/api/setPolicy`: This will update the existing policy in the database. Incase, there is no policy, it will create a new policy and store it in the database.
 
-### Utilities
+## Frontend Details
+The `cluster-frontend` has 2 routes to visit:
+1. `/` route will have the IOPS and Throughput graph
+2. `/policy` route will have the Snapshot policy
 
-This Turborepo has some additional tools already setup for you:
+## Snapshots of UI:
+Performance Metrics
+![Performance Metrics](apps/cluster-frontend/performance-metrics.png)
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+Snapshot Policy
+![Snapshot Policy](apps/cluster-frontend/snapshot-policy.png)
